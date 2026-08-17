@@ -192,10 +192,7 @@ You should do this before installing macOS because you will not have access to a
 
 Boot from the USB stick by pressing `F12` during startup. You should see the OpenCore boot picker with different options:
 
-<a href="assets/opencore-boot-picker.webp" title="OpenCore boot picker">
-    <img src="assets/opencore-boot-picker.webp" alt="OpenCore boot picker" />
-</a>
-<br>
+[![OpenCore boot picker](assets/opencore-boot-picker.webp "OpenCore boot picker")](assets/opencore-boot-picker.webp)
 
 If you don't see all the options, press the `space bar` on your keyboard to make them visible.
 
@@ -258,10 +255,7 @@ The best way to do this is to run [USBToolBox](https://github.com/USBToolBox/too
 
 When mapping you should see the following for the three internal devices I mentioned above:
 
-<a href="assets/usbtoolbox-win.webp" title="USBToolBox on Windows">
-    <img src="assets/usbtoolbox-win.webp" alt="USBToolBox on Windows" />
-</a>
-<br>
+[![USBToolBox on Windows](assets/usbtoolbox-win.webp "USBToolBox on Windows")](assets/usbtoolbox-win.webp)
 
 In my case they show as:
 
@@ -277,10 +271,7 @@ If you can only do it from macOS, then I recommend you to remove the entries for
 
 When mapping you should see the following for the three internal devices I mentioned above:
 
-<a href="assets/usbmap-mac.webp" title="USBMap on macOS">
-    <img src="assets/usbmap-mac.webp" alt="USBMap on macOS" />
-</a>
-
+[![USBMap on macOS](assets/usbmap-mac.webp "USBMap on macOS")](assets/usbmap-mac.webp)
 In my case they show as:
 
 - Port 4: Bluetooth
@@ -314,7 +305,7 @@ Here's the output:
 </a> <a href="assets/cfg-unlock-2.webp" title="CFG unlock check using ControlMsrE2">
     <img src="assets/cfg-unlock-2.webp" alt="CFG unlock check using ControlMsrE2" width="48%" height="auto" />
 </a>
-<br>
+<br />
 
 If you are able to unlock it, remember to **disable** the following in your `config.plist`:
 
