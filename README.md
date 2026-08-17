@@ -1,9 +1,6 @@
 # Dell 7567 laptop Hackintosh - OpenCore 1.0.7
 
-<a href="assets/dell-7567-macos-desktop.webp" title="Dell 7567 laptop running macOS">
-    <img src="assets/dell-7567-macos-desktop.webp" alt="Dell 7567 laptop running macOS" />
-</a>
-<br>
+[![Dell 7567 laptop running macOS](assets/dell-7567-macos-desktop.webp "Dell 7567 laptop running macOS")](assets/dell-7567-macos-desktop.webp)
 
 ![macOS](https://img.shields.io/badge/macOS-Sequoia%2015.7.9-d3a94e?style=for-the-badge) ![OpenCore](https://img.shields.io/badge/OpenCore-1.0.7-41a1bf?style=for-the-badge) ![Dell BIOS](https://img.shields.io/badge/Dell%20BIOS-1.15.0-b75252?style=for-the-badge)
 
