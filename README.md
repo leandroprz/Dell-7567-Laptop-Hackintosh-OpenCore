@@ -4,6 +4,7 @@
     <img src="assets/dell-7567-macos-desktop.webp" alt="Dell 7567 laptop running macOS" />
 </a>
 
+
 ![macOS](https://img.shields.io/badge/macOS-Sequoia%2015.7.9-d3a94e?style=for-the-badge) ![OpenCore](https://img.shields.io/badge/OpenCore-1.0.7-41a1bf?style=for-the-badge) ![Dell BIOS](https://img.shields.io/badge/Dell%20BIOS-1.15.0-b75252?style=for-the-badge)
 
 This is my manually built EFI following [Dortania's OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/) that uses the [OpenCore bootloader](https://github.com/acidanthera/OpenCorePkg).
@@ -198,6 +199,7 @@ Boot from the USB stick by pressing `F12` during startup. You should see the Ope
     <img src="assets/opencore-boot-picker.webp" alt="OpenCore boot picker" />
 </a>
 
+
 If you don't see all the options, press the `space bar` on your keyboard to make them visible.
 
 Here's a quick rundown of what they do:
@@ -263,6 +265,7 @@ When mapping you should see the following for the three internal devices I menti
     <img src="assets/usbtoolbox-win.webp" alt="USBToolBox on Windows" />
 </a>
 
+
 In my case they show as:
 
 - Port 4: Bluetooth
@@ -314,6 +317,7 @@ Here's the output:
 </a> <a href="assets/cfg-unlock-2.webp" title="CFG unlock check using ControlMsrE2">
     <img src="assets/cfg-unlock-2.webp" alt="CFG unlock check using ControlMsrE2" width="48%" height="auto" />
 </a>
+
 
 If you are able to unlock it, remember to **disable** the following in your `config.plist`:
 
