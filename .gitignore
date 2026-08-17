@@ -1,0 +1,33 @@
+# .gitignore
+
+# IDEs
+.vscode/
+*.code-workspace
+
+# Python
+src/__pycache__/
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.bak
+.cache/
+
+# macOS
+.DS_Store
+__MACOSX
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Misc
+Internal/
+new_release.py
