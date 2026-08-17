@@ -303,9 +303,10 @@ Here's the output:
 <p align="center">
     <a href="assets/cfg-unlock-1.webp" title="CFG unlocked using Modified GRUB Shell">
         <img src="assets/cfg-unlock-1.webp" alt="CFG unlocked using Modified GRUB Shell" width="48%" height="auto" />
-</a> <a href="assets/cfg-unlock-2.webp" title="CFG unlock check using ControlMsrE2">
-            <img src="assets/cfg-unlock-2.webp" alt="CFG unlock check using ControlMsrE2" width="48%" height="auto" />
-        </a>
+    </a>
+    <a href="assets/cfg-unlock-2.webp" title="CFG unlock check using ControlMsrE2">
+        <img src="assets/cfg-unlock-2.webp" alt="CFG unlock check using ControlMsrE2" width="48%" height="auto" />
+    </a>
 </p>
 
 If you are able to unlock it, remember to **disable** the following in your `config.plist`:
