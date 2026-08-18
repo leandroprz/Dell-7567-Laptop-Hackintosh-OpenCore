@@ -1,5 +1,7 @@
 # Hackintosh triple boot
 
+[![rEFInd boot picker](assets/triple-boot-refind-picker.webp "rEFInd boot picker")](assets/triple-boot-refind-picker.webp)
+
 Dual or triple booting a hackintosh is easy if you keep in mind a few things before starting the whole process. 
 Here I'll briefly explain how I got the three systems running on a single drive on the **Dell 7567** laptop from the start, without the need to resize any partition after the installation.
 
