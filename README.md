@@ -12,10 +12,10 @@ Keep in mind that this is meant to be used as a starting point to get you quickl
 
 # TL;DR
 
-1. Clone this repository using `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git` or download the EFI from [Releases](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/releases/latest)
+1. Clone this repository using `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git` or download it from [here](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip)
 2. Generate and fill the missing info in the `config.plist` with your own SMBIOS using [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS)
 3. Use [Mist](https://github.com/ninxsoft/Mist) on an Intel Mac to get the `.app` installer or follow the [Dortania Creating the USB guide](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/) to get a proper macOS installer
-4. Mount the EFI partition of your USB and copy over the EFI folder you got from this repo
+4. Mount the EFI partition of your USB and copy over the EFI folder you got from this repo (if single booting, only copy the folders `BOOT` and `OC`)
 5. Update and modify the BIOS on your Dell 7567 laptop by following the instructions [listed below](#bios-settings)
 6. Boot OpenCore from the USB you prepared and select _Install macOS Sequoia_ from the picker
 7. If everything went OK, you should arrive at the installer screen. Choose _Disk Utility_, click the _View_ icon on the top left and choose _Show All Devices_, then click on _Erase_ and format the drive itself using `APFS` and `GUID Partition Map`
@@ -43,7 +43,16 @@ But there's just a small problem, `MacBookPro14,3` is [only supported up to macO
 
 # Table of contents
 
-FILL ME********
+- [Hardware specifications](#hardware-specifications)
+- [Compatibility status](#compatibility-status)
+- [Getting started](#getting-started)
+- [Creating a bootable USB](#creating-a-bootable-usb)
+- [First boot](#first-boot)
+- [Post-Installation](#post-installation)
+- [FAQ](#faq)
+- [Troubleshooting](#troubleshooting)
+- [Recommended apps](#recommended-apps)
+- [References and credits](#recommended-apps)
 
 # Hardware specifications
 
@@ -63,64 +72,50 @@ FILL ME********
 | Touchpad       | HID-compliant touchpad (reported as `DLL0798, VID_06CB`)                          |
 | Video port     | HDMI-out                                                                          |
 | USB ports      | 3x USB Type-A 3.0                                                                 |
-| Card reader    | Realtek SDHC Card Reader (`VID_­0BDA&­PID_­0177`)                                 |
+| Card reader    | Realtek SDHC Card Reader (`VID_­0BDA&­PID_­0177`)                  |
 | Webcam         | Dell Integrated WebCam (`VID_1BCF&PID_28C1`)                                      |
 
 # Compatibility status
 
-## Working
-
-- CPU power management
-- Integrated GPU hardware acceleration
-- All USB ports at their max speed
-- Gigabit ethernet
-- WiFi (using [HeliPort](https://github.com/OpenIntelWireless/HeliPort/))
-- Onboard audio and integrated speaker 2.0 (no subwoofer)
-- Touchpad/trackpad with gestures (this one took a LOT of work and research)
-- Keyboard
-- Brightness keys
-- Fn keys
-- Mouse
-- Integrated webcam
-- SDHC card reader
-- Dell sensors
-- Sleep and wake (one caveat, the keyboard backlight stays on during sleep)
-- SIP enabled
-- DRM support
-- App Store
-- iServices
-
-## Partially working
-
-- Bluetooth - Some devices are discoverable, but you can't connect to them. [This is a known _IntelBluetoothFirmware_ issue](https://openintelwireless.github.io/IntelBluetoothFirmware/FAQ.html#i-can-t-connect-to-device-xxx-but-it-s-successfully-discovered)
-
-## Not working
-
-- NVIDIA GeForce GTX 1050 Ti (not supported, disabled using an SSDT)
-- HDMI - Since the port is directly connected to the dGPU, it doesn't work at all
-- Location and Continuity services ([not compatible](https://openintelwireless.github.io/itlwm/FAQ.html#usage) with 
-  `itlwm.kext`)
-- OTA updates - Instead of downloading a small sized update for a minor version, you'll have to download the full installer
-
-## Needs further testing
-
-- 3.5mm jack - The headset earbuds work, but the mic does not. I have to test with a different `layout-id`
-
-## Not tested
-
-- Battery readings (my laptop does not have a physical battery)
-- FileVault
+| Status                | Compatibility                                                                             |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| Working               | CPU power management                                                                      |
+| Working               | Integrated GPU hardware acceleration                                                      |
+| Working               | All USB ports at their max speed                                                          |
+| Working               | Gigabit ethernet                                                                          |
+| Working               | WiFi (using [HeliPort](https://github.com/OpenIntelWireless/HeliPort/))                   |
+| Working               | Onboard audio and integrated speaker 2.0 (no subwoofer)                                   |
+| Working               | Touchpad/trackpad with gestures (this one took a LOT of work and research)                |
+| Working               | Keyboard                                                                                  |
+| Working               | Brightness keys                                                                           |
+| Working               | Fn keys                                                                                   |
+| Working               | Mouse                                                                                     |
+| Working               | Integrated webcam                                                                         |
+| Working               | SDHC card reader                                                                          |
+| Working               | Dell sensors                                                                              |
+| Working               | Sleep and wake (one caveat, the keyboard backlight stays on during sleep)                 |
+| Working               | SIP enabled                                                                               |
+| Working               | DRM support                                                                               |
+| Working               | App Store                                                                                 |
+| Working               | iServices                                                                                 |
+| Partially working     | Bluetooth - Some devices are discoverable, but you can't connect to them. [This is a known _IntelBluetoothFirmware_ issue](https://openintelwireless.github.io/IntelBluetoothFirmware/FAQ.html#i-can-t-connect-to-device-xxx-but-it-s-successfully-discovered) |
+| Not working           | NVIDIA GeForce GTX 1050 Ti (not supported, disabled using an SSDT)                        |
+| Not working           | HDMI - Since the port is directly connected to the dGPU, it doesn't work at all           |
+| Not working           | Location and Continuity services ([not compatible](https://openintelwireless.github.io/itlwm/FAQ.html#usage) with `itlwm.kext`)                                                                                                        |
+| Not working           | OTA updates - Instead of downloading a small sized update for a minor version, you'll have to download the full installer                                                                                                           |
+| Needs further testing | 3.5mm jack - The headset earbuds work, but the mic does not. I have to test with a different `layout-id` |
+| Not tested            | Battery readings (my laptop does not have a physical battery)                             |
+| Not tested            | FileVault                                                                                 |
 
 ## Performance
 
-Here are three Geekbench 7 benchmarks:
-- [CPU](https://browser.geekbench.com/v7/cpu/70376)
-  - Single-core score: 1096
-  - Multi-core score: 4069
-- [GPU (OpenCL)](https://browser.geekbench.com/v7/gpu/37177)
-  - Compute score: 3762
-- [GPU (Metal)](https://browser.geekbench.com/v7/gpu/37164)
-  - Compute score: 3643
+Here are some _Geekbench 7_ benchmarks:
+| Benchmark | Test  | Score |
+| --------- | ----------- | ----: |
+| CPU   | [Single-core](https://browser.geekbench.com/v7/cpu/70376) |  1096 |
+| CPU   | [Multi-core](https://browser.geekbench.com/v7/cpu/70376)  |  4069 |
+| GPU   | [OpenCL](https://browser.geekbench.com/v7/gpu/37177)      |  3762 |
+| GPU   | [Metal](https://browser.geekbench.com/v7/gpu/37164)       |  3643 |
 
 # Getting started
 
@@ -128,7 +123,7 @@ Here are three Geekbench 7 benchmarks:
 
 You MUST add your own _System Serial Number_, _System UUID_, _MLB_ and _ROM_ in the `PlatformInfo` section of the `config.plist` file, otherwise your system will not boot.
 
-1. Download the latest EFI package from [Releases](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/releases/latest) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git`
+1. Download the latest EFI package from [here](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git`
 2. Run [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) and drop the `config.plist` in there to generate the _System Serial Number_, _System UUID_ and _MLB_ using `MacBookPro14,3` for the _SMBIOS_
 3. For the _ROM_ you should use your Ethernet/WiFi MAC address (e.g.: `A4:80:F6:J8:I2:5K`). You can get this value by running `ipconfig /all` on Windows or `ifconfig` on macOS/Linux. Copy the MAC, open [ProperTree](https://github.com/corpnewt/ProperTree) and paste the value in _PlatformInfo > Generic > ROM_ with no colon `:` (e.g.: `a480f6j8i25k`)
 4. Go to [Apple's Check Coverage Page](https://checkcoverage.apple.com/) and make sure your _System Serial Number_ shows up as **invalid serial**. You should get a message such as _The serial number you've entered isn't valid_. For more detailed instructions, refer to [Dortania's OpenCore Guide](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html#serial-number-validity)
@@ -150,11 +145,13 @@ You MUST add your own _System Serial Number_, _System UUID_, _MLB_ and _ROM_ in 
     - _POST Behavior > Fastboot_ - Select _Thorought_
     - _Virtualization Support > Virtualization > Enable Intel Virtualization Technology_ - Enable this option
 
-The other settings can be left as is or change them to whatever you want.
+The other settings can be left as is or change them to whatever you need.
 
 # Creating a bootable USB
 
 You'll need at least a 32GB USB stick for the installer. Do not use an Apple Silicon Mac (M1/M2/M3, etc) to download the installer. They download ARM64 installers, not the x86_64/AMD64 that we need for this Intel based laptop.
+
+Keep in mind that whatever the method below you choose, if single booting you will only need to copy the folders `BOOT` and `OC` from this repository into your bootable USB.
 
 ## Method 1: Using the official OpenCore guide
 
