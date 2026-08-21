@@ -52,7 +52,7 @@ But there's just a small problem, `MacBookPro14,3` is [only supported up to macO
 - [FAQ](#faq)
 - [Troubleshooting](#troubleshooting)
 - [Recommended apps](#recommended-apps)
-- [References and credits](#recommended-apps)
+- [References and credits](#references-and-credits)
 
 # Hardware specifications
 
