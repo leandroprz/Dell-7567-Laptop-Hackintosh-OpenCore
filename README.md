@@ -2,7 +2,7 @@
 
 [![Dell 7567 laptop running macOS](assets/dell-7567-macos-desktop.webp "Dell 7567 laptop running macOS")](assets/dell-7567-macos-desktop.webp)
 
-![macOS](https://img.shields.io/badge/macOS-Sequoia%2015.7.9-d3a94e?style=for-the-badge) ![OpenCore](https://img.shields.io/badge/OpenCore-1.0.7-41a1bf?style=for-the-badge) ![Dell BIOS](https://img.shields.io/badge/Dell%20BIOS-1.15.0-b75252?style=for-the-badge)
+[![macOS](https://img.shields.io/badge/macOS-Sequoia%2015.7.9-d3a94e?style=for-the-badge)](#) [![OpenCore](https://img.shields.io/badge/OpenCore-1.0.7-41a1bf?style=for-the-badge)](#) [![Dell BIOS](https://img.shields.io/badge/Dell%20BIOS-1.15.0-b75252?style=for-the-badge)](#)
 
 This is my manually built EFI following [Dortania's OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/) that uses the [OpenCore bootloader](https://github.com/acidanthera/OpenCorePkg).
 
@@ -12,7 +12,7 @@ Keep in mind that this is meant to be used as a starting point to get you quickl
 
 # TL;DR
 
-1. Clone this repository using `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git` or download the EFI from [Releases](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/releases)
+1. Clone this repository using `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git` or download the EFI from [Releases](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/releases/latest)
 2. Generate and fill the missing info in the `config.plist` with your own SMBIOS using [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS)
 3. Use [Mist](https://github.com/ninxsoft/Mist) on an Intel Mac to get the `.app` installer or follow the [Dortania Creating the USB guide](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/) to get a proper macOS installer
 4. Mount the EFI partition of your USB and copy over the EFI folder you got from this repo
@@ -29,7 +29,7 @@ If you want to learn more or need to do some troubleshooting, keep reading.
 
 Here I'll share some information I gathered along the way while building my EFI for this 2017 laptop as well as some recommendations to get everything working as stable as possible.
 
-Right now I'm triple booting _Windows 11_, _macOS Sequoia_ and _CachyOS_ on a **single NVMe drive** and everything works perfectly fine. If you only want to install macOS, just keep reading. If you want to double or triple boot, first take a look at the [Triple boot setup guide](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/triple-boot.md), since it is important to first partition your drive the right way to avoid issues down the road.
+Right now I'm triple booting _Windows 11_, _macOS Sequoia_ and _CachyOS_ on a **single NVMe drive** and everything works perfectly fine. If you only want to install macOS, just keep reading. If you want to double or triple boot, first take a look at the [Triple boot setup guide](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/blob/main/triple-boot.md), since it is important to first partition your drive the right way to avoid issues down the road.
 
 Based on this laptop's hardware I decided it was best to use `MacBookPro14,3` for the SMBIOS, since the laptop:
 
@@ -128,7 +128,7 @@ Here are three Geekbench 7 benchmarks:
 
 You MUST add your own _System Serial Number_, _System UUID_, _MLB_ and _ROM_ in the `PlatformInfo` section of the `config.plist` file, otherwise your system will not boot.
 
-1. Download the latest EFI package from [Releases](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/releases) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git`
+1. Download the latest EFI package from [Releases](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/releases/latest) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git`
 2. Run [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) and drop the `config.plist` in there to generate the _System Serial Number_, _System UUID_ and _MLB_ using `MacBookPro14,3` for the _SMBIOS_
 3. For the _ROM_ you should use your Ethernet/WiFi MAC address (e.g.: `A4:80:F6:J8:I2:5K`). You can get this value by running `ipconfig /all` on Windows or `ifconfig` on macOS/Linux. Copy the MAC, open [ProperTree](https://github.com/corpnewt/ProperTree) and paste the value in _PlatformInfo > Generic > ROM_ with no colon `:` (e.g.: `a480f6j8i25k`)
 4. Go to [Apple's Check Coverage Page](https://checkcoverage.apple.com/) and make sure your _System Serial Number_ shows up as **invalid serial**. You should get a message such as _The serial number you've entered isn't valid_. For more detailed instructions, refer to [Dortania's OpenCore Guide](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html#serial-number-validity)
