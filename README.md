@@ -12,18 +12,18 @@ Keep in mind that this is meant to be used as a starting point to get you quickl
 
 # TL;DR
 
-1. Clone this repository using `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git` or download it from [here](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip)
+1. [Download](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git`
 2. Generate and fill the missing info in the `config.plist` with your own SMBIOS using [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS)
 3. Use [Mist](https://github.com/ninxsoft/Mist) on an Intel Mac to get the `.app` installer or follow the [Dortania Creating the USB guide](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/) to get a proper macOS installer
-4. Mount the EFI partition of your USB and copy over the EFI folder you got from this repo (if single booting, only copy the folders `BOOT` and `OC`)
+4. Mount the EFI partition of your USB and copy the EFI folder you got from this repo (if single booting, only copy the folders `BOOT` and `OC`)
 5. Update and modify the BIOS on your Dell 7567 laptop by following the instructions [listed below](#bios-settings)
 6. Boot OpenCore from the USB you prepared and select _Install macOS Sequoia_ from the picker
 7. If everything went OK, you should arrive at the installer screen. Choose _Disk Utility_, click the _View_ icon on the top left and choose _Show All Devices_, then click on _Erase_ and format the drive itself using `APFS` and `GUID Partition Map`
 8. Close _Disk Utility_ and start the _macOS Installer_. Follow the steps on screen to install macOS. The computer will reboot about 3 times and without any intervention you should get the _First Time Setup_ screen once the installer finishes
-9. Use [MountEFI](https://github.com/corpnewt/MountEFI) to mount both your USB and SSD EFI partitions. Copy the EFI folder from your bootable USB to your SSD. After this you no longer need your USB drive to boot into macOS
+9. Use [MountEFI](https://github.com/corpnewt/MountEFI) to mount both your USB and SSD EFI partitions. Copy the EFI folder from your bootable USB to your SSD
 10. Follow the [OpenCore Post-Install](https://dortania.github.io/OpenCore-Post-Install/) guide to get your hackintosh as optimized as possible
 
-If you want to learn more or need to do some troubleshooting, keep reading.
+**If you want to learn more or need to do some troubleshooting, keep reading.**
 
 # Overview
 
@@ -45,9 +45,10 @@ But there's just a small problem, `MacBookPro14,3` is [only supported up to macO
 
 - [Hardware specifications](#hardware-specifications)
 - [Compatibility status](#compatibility-status)
+- [Performance](#performance)
 - [Getting started](#getting-started)
 - [Creating a bootable USB](#creating-a-bootable-usb)
-- [First boot](#first-boot)
+- [First boot and installation](#first-boot-and-installation)
 - [Post-Installation](#post-installation)
 - [FAQ](#faq)
 - [Troubleshooting](#troubleshooting)
@@ -107,7 +108,7 @@ But there's just a small problem, `MacBookPro14,3` is [only supported up to macO
 | Not tested            | Battery readings (my laptop does not have a physical battery)                             |
 | Not tested            | FileVault                                                                                 |
 
-## Performance
+# Performance
 
 Here are some _Geekbench 7_ benchmarks:
 | Benchmark | Test  | Score |
@@ -123,7 +124,7 @@ Here are some _Geekbench 7_ benchmarks:
 
 You MUST add your own _System Serial Number_, _System UUID_, _MLB_ and _ROM_ in the `PlatformInfo` section of the `config.plist` file, otherwise your system will not boot.
 
-1. Download the latest EFI package from [here](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git`
+1. [Download](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git`
 2. Run [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) and drop the `config.plist` in there to generate the _System Serial Number_, _System UUID_ and _MLB_ using `MacBookPro14,3` for the _SMBIOS_
 3. For the _ROM_ you should use your Ethernet/WiFi MAC address (e.g.: `A4:80:F6:J8:I2:5K`). You can get this value by running `ipconfig /all` on Windows or `ifconfig` on macOS/Linux. Copy the MAC, open [ProperTree](https://github.com/corpnewt/ProperTree) and paste the value in _PlatformInfo > Generic > ROM_ with no colon `:` (e.g.: `a480f6j8i25k`)
 4. Go to [Apple's Check Coverage Page](https://checkcoverage.apple.com/) and make sure your _System Serial Number_ shows up as **invalid serial**. You should get a message such as _The serial number you've entered isn't valid_. For more detailed instructions, refer to [Dortania's OpenCore Guide](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html#serial-number-validity)
@@ -171,6 +172,21 @@ sudo /Applications/Install\ macOS\ Sequoia.app/Contents/Resources/createinstallm
 ```
 5. Mount the USB's EFI partition using [MountEFI](https://github.com/corpnewt/MountEFI) and copy the modified OpenCore EFI folder into it. Your bootable macOS installer is now ready.
 
+Your EFI folder should look something like this:
+```
+USB EFI partition/
+└── EFI/
+    ├── BOOT/
+    │   └── BOOTx64.efi
+    └── OC/
+        └── ACPI/
+        └── Drivers/
+        └── Kexts/
+        └── Resources/
+        └── Tools/
+        └── config.plist
+        └── OpenCore.efi
+```
 ## Method 3: Using virtualized macOS on VMware
 
 1. Set up [OC4VM](https://github.com/DrDonk/OC4VM) for [VMware Workstation Pro](https://support.broadcom.com/group/ecx/productdownloads?subfamily=VMware%20Workstation%20Pro&freeDownloads=true) (you'll need to create a free account on Broadcom's website to get the installer)
@@ -185,7 +201,7 @@ Make sure to download the following tools and copy them into the USB installer o
 
 You should do this before installing macOS because you will not have access to a WiFi network to download them until you install _HeliPort_. You should have Internet via ethernet though, so you could just connect your laptop to your router using a cable until you have WiFi working on the computer.
 
-# First boot
+# First boot and installation
 
 Boot from the USB stick by pressing `F12` during startup. You should see the OpenCore boot picker with different options:
 
@@ -217,24 +233,7 @@ At the OpenCore boot picker:
 ## Booting without the USB stick
 
 1. Once at the desktop run [MountEFI](https://github.com/corpnewt/MountEFI) and mount both the USB and internal SSD EFI partitions
-2. Copy the EFI folder from the USB to the internal SSD EFI partition. Your EFI folder should look like this:
-
-```
-EFI System Partition/
-└── EFI/
-    ├── BOOT/
-    │   └── BOOTx64.efi
-    └── OC/
-        └── ACPI/
-        └── Drivers/
-        └── Kexts/
-        └── Resources/
-        └── Tools/
-        └── config.plist
-        └── OpenCore.efi
-```
-
-Done. You can now boot without the USB installer.
+2. Copy the EFI folder from the USB to the internal SSD EFI partition. You can now boot without the USB installer
 
 ## Getting WiFi working
 
@@ -283,7 +282,7 @@ macOS needs a BIOS setting called _CFG Lock_ to be disabled to run stable. Since
 
 For this step I'll share what I've found on my hardware + BIOS firmware, but it is strongly recommended to check if your setup is using the same offset, because offsets are unique not just to each motherboard but even to its firmware version.
 
-After checking that my firmware was indeed locked using _ControlMsrE2.efi_, I extracted the offset and this is what I got:
+After checking that my firmware was indeed locked using [_ControlMsrE2.efi_](https://github.com/acidanthera/OpenCorePkg/releases), I extracted the offset and this is what I got:
 ```
 CFG Lock, VarStoreInfo (VarOffset/VarName): 0x4DE, VarStore: 0x1
 ```
@@ -291,7 +290,7 @@ And:
 ```
 VarStore: VarStoreId: 0x1 [EC87D643-EBA4-4BB5-A1E5-3F3E36B20DA9], Size: 0x13A3, Name: Setup {24 1C 43 D6 87 EC A4 EB B5 4B A1 E5 3F 3E 36 B2 0D A9 01 00 A3 13 53 65 74 75 70 00}
 ```
-Finally, this was the command I used to unlock it using _Modified GRUB Shell_:
+Finally, this was the command I used to unlock it using [_Modified GRUB Shell_](https://github.com/datasone/grub-mod-setup_var/releases):
 ```
 setup_var_cv Setup 0x4DE 0x01 0x00
 ```
