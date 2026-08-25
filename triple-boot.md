@@ -2,6 +2,8 @@
 
 [![rEFInd boot picker](assets/triple-boot-refind-picker.webp "rEFInd boot picker")](assets/triple-boot-refind-picker.webp)
 
+[![macOS](https://img.shields.io/badge/macOS-Sequoia%2015.7.9-d3a94e?style=for-the-badge)](#) [![Windows](https://img.shields.io/badge/Windows%2011-25H2-61a0d3?style=for-the-badge)](#) [![Linux](https://img.shields.io/badge/Linux-CachyOS-2d8c8c?style=for-the-badge)](#)
+
 Dual or triple booting a hackintosh is easy if you keep in mind a few things before starting the whole process. 
 Here I'll briefly explain how I got the three systems running on a single drive on the **Dell 7567** laptop from the start, without the need to resize any partition after the installation.
 
@@ -61,9 +63,7 @@ For our setup we can just use **200MB** (the macOS default) and it will work jus
 
 You can also add the size of this partition to the math we did before, but it's so small you won't notice the difference practically (if using 200MB).
 
-# Getting started
-
-## Partitioning the hard drive
+# Partitioning the hard drive
 
 We'll use the macOS installer to create the partitions and set their sizes from the start. Then we'll deal with the file systems for each OS.
 
@@ -71,23 +71,21 @@ We'll use the macOS installer to create the partitions and set their sizes from 
     - Name: _macOS_
     - Format: `APFS`
     - Scheme: `GUID Partition Map`
-
 2. Select the SSD drive and click on _Partition_. You will see a new window where you can choose how many partitions you want.
     
     When clicking on the `+` button to add a new partition, you might get a message like _"Do you want to add a volume to the APFS container or do you want to divide the container’s storage into separate partitions?"_, if that's the case, click on _Add Partition_.
-    
 3. Create three partitions to get something like this:
 
     [![Partition the drive in macOS](assets/macos-disk-util-partition.webp "Partition the drive in macOS")](assets/macos-disk-util-partition.webp)
 
     Select the sizes you want for your partitions and set them up:
-    1. macOS
+    - macOS
         - Name: _macOS_
         - Format: `APFS`
-    2. Windows
+    - Windows
         - Name: _Windows_
         - Format: `ExFAT`
-    3. Linux
+    - Linux
         - Name: _Linux_
         - Format: `ExFAT`
 
@@ -95,7 +93,7 @@ We'll use the macOS installer to create the partitions and set their sizes from 
     
     An identifying name for each partition will be useful on the next steps. Don't mind the ExFAT partitions for now, they are serving as placeholders.
 
-# Installation
+# Installation order
 
 ## 1. macOS
 
@@ -142,15 +140,13 @@ This step will vary depending on your distro. I chose [CachyOS](https://cachyos.
 
 # Boot manager configuration
 
-Since Windows probably replaced the macOS configuration on the EFI partition, we'll fix that and also get the three operating systems working using a single boot manager to keep it as simple as possible.
+Since Windows probably replaced the macOS configuration on the EFI system partition, we'll fix that and also get the three operating systems working using a single boot manager (rEFInd) to keep things simple.
 
 ## Fixing OpenCore
 
-Boot using the macOS USB stick and from the OpenCore boot picker select the macOS installation that's already present in your internal SSD drive.
-
-1. Once at the desktop run [MountEFI](https://github.com/corpnewt/MountEFI) and mount both the USB and internal SSD EFI partitions
-2. Copy the EFI folder from the USB to the internal SSD EFI partition. Your EFI system partition should look like this:
-
+1. Boot using the macOS USB stick and from the OpenCore boot picker select the macOS installation that's already present in your internal SSD drive
+2. Once at the desktop run [MountEFI](https://github.com/corpnewt/MountEFI) and mount both the USB and internal SSD EFI partitions
+3. Copy the EFI folder from the USB to the internal SSD EFI partition. Your _Linux distro_ and _Microsoft_ folders should already be present. Your EFI system partition should look like this:
 ```
 EFI System Partition/
 └── EFI/
@@ -170,77 +166,103 @@ EFI System Partition/
         └── config.plist
         └── OpenCore.efi
 ```
-
-Your EFI partition now has almost everything to boot into each OS without using any USB stick.
-
 ## Installing and configuring rEFInd
 
-Why [rEFInd](https://www.rodsbooks.com/refind/index.html) instead of OpenCore? Simply put, the OpenCore bootloader will apply some macOS specific unwanted patches to the other systems when booting them and we want to avoid that. You can read more about it [here](https://chriswayg.gitbook.io/opencore-visual-beginners-guide/advanced-topics/dual-boot-options).
+Why [rEFInd](https://www.rodsbooks.com/refind/index.html) instead of OpenCore? Simply put, the OpenCore bootloader will apply some macOS specific unwanted patches to the other systems when booting and we want to avoid that. You can read more about it [here](https://chriswayg.gitbook.io/opencore-visual-beginners-guide/advanced-topics/dual-boot-options).
 
-Also, I found it easier to setup rEFInd as a boot manager and was able to get it exactly as I wanted (themes included).
-
-You'll have to boot into your Linux installation (this is where GRUB comes handy), install rEFInd and finally copy and modify the configuration files from this repository to the folders `refind` and `tools` in your EFI system partition.
+Also, I found it easier to setup rEFInd as a boot manager and was able to get it exactly as I wanted (theme included).
 
 ### Installing the package
 
-The command to install rEFInd depends on your distro:
-
-Arch based:
-```
-sudo pacman -S refind
-sudo refind-install
-```
-Debian based:
-```
-sudo apt update
-sudo apt install refind
-```
-Fedora based:
-```
-sudo dnf install refind
-sudo refind-install
-```
-For other distros, refer to the [official rEFInd website](https://www.rodsbooks.com/refind/installing.html).
+1. Boot into your Linux installation
+2. Install rEFInd. The command to install it depends on your distro:
+    
+    **Arch based**:
+    ```
+    sudo pacman -S refind
+    sudo refind-install
+    ```
+    **Debian based**:
+    ```
+    sudo apt update
+    sudo apt install refind
+    ```
+    **Fedora based**:
+    ```
+    sudo dnf install refind
+    sudo refind-install
+    ```
+For other distros or manual installation, refer to the [official rEFInd website](https://www.rodsbooks.com/refind/installing.html).
 
 ### Configuring rEFInd
 
-check refind/drivers_x64/
+This repository contains my custom `theme.conf` file. You can [download](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) that and use it as a starting point. I recommend you to keep reading and modify it to your needs, especially if you are using a different distro than me. The theme I'm using is slightly a modified version of [rEFInd minimal black](https://github.com/andersfischernielsen/rEFInd-minimal-black).
 
-add tools/shellx64.efi
-
-choose default OS: refind/refind.conf
-
-choose theme: refind/themes/minimal-black
-
-```
-EFI System Partition/
-└── EFI/
-    ├── BOOT/
-    │   └── BOOTx64.efi
-    ├── cachyos/
-    │   └── grubx64.efi
-    ├── Microsoft
-    │   └── Boot/
-    │   └── Recovery/
-    ├── OC/
-    │   └── ACPI/
-    │   └── Drivers/
-    │   └── Kexts/
-    │   └── Resources/
-    │   └── Tools/
-    │   └── config.plist
-    │   └── OpenCore.efi
-    ├── refind/
-    └── tools/
-```
+1. You need to get your SSD's UUID. Open a Terminal and type `lsblk -f`. You'll see something like this:
+    ```
+    NAME        FSTYPE FSVER LABEL   UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+    sda                                                                                   
+    ├─sda1                                                                                
+    └─sda2      ntfs         Datos   F6FE4410FE43C797                                     
+    zram0       swap   1     zram0   73176885-3bf6-4627-9184-eac74ddfe4bb                [SWAP]
+    nvme0n1                                                                               
+    ├─nvme0n1p1 vfat   FAT32 EFI     67E3-17ED                             114,8M    42% /boot/efi
+    ├─nvme0n1p2 apfs                 f1fc7a76-0380-4e02-9180-954089400214                 
+    ├─nvme0n1p3 ntfs         Windows F4F212CAF21290CA                                     
+    ├─nvme0n1p4 btrfs        CachyOS 09354f10-a3e8-4ec6-a95c-2adbad1735ea  588,4G     4% /var/tmp
+    │                                                                                    /var/log
+    │                                                                                    /var/cache
+    │                                                                                    /srv
+    │                                                                                    /root
+    │                                                                                    /home
+    │                                                                                    /
+    ├─nvme0n1p5                                                                           
+    └─nvme0n1p6 swap   1             0860ff70-86a6-4a00-9625-53bdac8c4473                [SWAP]
+    ```
+    From this output you need the UUID for CachyOS.
+2. Open the `refind/themes/minimal-black/theme.conf` file downloaded from this repo using a text editor
+3. Near the end of the file there's an entry for Linux that says `menuentry "CachyOS" { ...`
+4. Inside that block find the line that starts with `options` and replace the UUID string with the one you got on the Terminal. In my case it is `09354f10-a3e8-4ec6-a95c-2adbad1735ea`
+5. Change anything else in the file to your liking. Read the file comments to understand what every line is doing
+6. Copy the folder `minimal-black` to `/boot/efi/EFI/refind/themes/`
+7. Use a text editor to change the default rEFInd configuration file located in `/boot/efi/EFI/refind/refind.conf`
+    Add the following at the end of the file:
+   ```
+    # Custom config
+    include themes/minimal-black/theme.conf
+    ```
+8. Inside the EFI folder you got from this repo, there's a folder called `tools`. Copy that folder to `/boot/efi/EFI/` to get _UEFI Shell_ working in the rEFInd boot picker
+9. After copying everything your EFI system partition should look like this:
+    ```
+    EFI System Partition/
+    └── EFI/
+        ├── BOOT/
+        │   └── BOOTx64.efi
+        ├── cachyos/
+        │   └── grubx64.efi
+        ├── Microsoft
+        │   └── Boot/
+        │   └── Recovery/
+        ├── OC/
+        │   └── ACPI/
+        │   └── Drivers/
+        │   └── Kexts/
+        │   └── Resources/
+        │   └── Tools/
+        │   └── config.plist
+        │   └── OpenCore.efi
+        ├── refind/
+        └── tools/
+    ```
+Now you'll be able to boot into Windows, Linux and macOS directly from the rEFInd boot picker.
 
 # Finishing touches
 
-choose the startup disk in macOS from system config
-
-Only keep macOS related disks in OpenCore boot picker: Security > ScanPolicy > 2687747 (number)
-
-Misc > Boot > ShowPicker > False
+We need to change our `config.plist` file to get a cleaner OpenCore boot picker.
+1. boot into macos and choose the startup disk in system config
+2. open MountEFI and mount your EFI system partition and open config.plist
+3. change Security > ScanPolicy > 2687747 (number) to only keep macOS related disks in the OpenCore boot picker
+4. To hide the opencore boot picker set Misc > Boot > ShowPicker > False
 
 # References and credits
 
@@ -248,9 +270,5 @@ Misc > Boot > ShowPicker > False
 - [How to remove Windows and hide Tools and have a Clean OpenCore Boot Menu?](https://www.reddit.com/r/hackintosh/comments/mgt0ow/how_to_remove_windows_and_hide_tools_and_have_a/)
 - [Dualbooting on the same disk](https://dortania.github.io/OpenCore-Multiboot/empty/samedisk.html)
 - [Dual-Boot Options](https://chriswayg.gitbook.io/opencore-visual-beginners-guide/advanced-topics/dual-boot-options)
-
-https://github.com/chriswayg/theme-minimal-black/
-
-https://github.com/andersfischernielsen/rEFInd-minimal-black
-
-https://www.youtube.com/watch?v=xZUH0UCL6AI
+- [rEFInd minimal black theme](https://github.com/andersfischernielsen/rEFInd-minimal-black)
+- [REFIND - Hackintosh Dual Boot SIN PASAR POR OPENCORE](https://www.youtube.com/watch?v=xZUH0UCL6AI)
