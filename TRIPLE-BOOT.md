@@ -38,7 +38,6 @@ I'll explain the steps you need to follow and how to get all three systems to sh
 ## Installation order
 
 The installation order that will make this work is the following:
-
 1. macOS
 2. Windows
 3. Linux
@@ -76,26 +75,25 @@ We'll use the macOS installer to create the partitions and set their sizes from 
 - Scheme: `GUID Partition Map`
 
 2. Select the SSD drive and click on _Partition_. You will see a new window where you can choose how many partitions you want.
-    
-    When clicking on the `+` button to add a new partition, you might get a message like _"Do you want to add a volume to the APFS container or do you want to divide the container’s storage into separate partitions?"_, if that's the case, click on _Add Partition_.
-3. Create three partitions to get something like this:
+3. When clicking on the `+` button to add a new partition, you might get a message like _"Do you want to add a volume to the APFS container or do you want to divide the container’s storage into separate partitions?"_, if that's the case, click on _Add Partition_.
+4. Create three partitions to get something like this:
 
-    [![Partition the drive in macOS](assets/macos-disk-util-partition.webp "Partition the drive in macOS")](assets/macos-disk-util-partition.webp)
+[![Partition the drive in macOS](assets/macos-disk-util-partition.webp "Partition the drive in macOS")](assets/macos-disk-util-partition.webp)
 
-    Select the sizes you want for your partitions and set them up:
-    - macOS
-        - Name: _macOS_
-        - Format: `APFS`
-    - Windows
-        - Name: _Windows_
-        - Format: `ExFAT`
-    - Linux
-        - Name: _Linux_
-        - Format: `ExFAT`
+Select the sizes you want for your partitions and set them up:
+- macOS
+    - Name: _macOS_
+    - Format: `APFS`
+- Windows
+    - Name: _Windows_
+    - Format: `ExFAT`
+- Linux
+    - Name: _Linux_
+    - Format: `ExFAT`
 
-    Click on _Apply_.
-    
-    An identifying name for each partition will be useful on the next steps. Don't mind the `ExFAT` partitions for now, they are serving as placeholders.
+Click on _Apply_.
+
+An identifying name for each partition will be useful on the next steps. Don't mind the `ExFAT` partitions for now, they are serving as placeholders.
 
 # Installing the OSes
 
@@ -109,7 +107,7 @@ We'll use the macOS installer to create the partitions and set their sizes from 
 1. Boot using the Windows installer and when asked, select _Custom install_
 2. You should see the partitions you created in macOS:
 
-    [![Windows installer](assets/win-install.webp "Windows installer")](assets/win-install.webp)
+[![Windows installer](assets/win-install.webp "Windows installer")](assets/win-install.webp)
 
 3. Choose the one you previously named _Windows_, format it (the default file system is `NTFS`, this is selected automatically) and install Windows. The installer will probably overwrite the macOS EFI partition, but we'll fix that later
 4. Once finished, shutdown the computer and plug the Linux USB installer
@@ -120,17 +118,16 @@ This step will vary depending on your distro. I chose [CachyOS](https://cachyos.
 
 1. Boot using your Linux USB. The CachyOS installer will ask you to select a bootloader, choose _GRUB_. We won't be using it, but since CachyOS doesn't have an option to not install a bootloader, I'm selecting that. Plus, it is a good idea to have GRUB as a fallback in case _rEFInd_ fails after an update
 2. When asked how you want to partition the drive, select _Manual partitioning_. You'll see something like this:
-    
-    [![CachyOS installer](assets/cachyos-install.webp "CachyOS installer")](assets/cachyos-install.webp)
-    
-    Double click on the partition you previously named _Linux_. We need to change the partition as follow:
-    
-    - Content: Format
-    - File system: `ext4` or `Btrfs`
-    - Mount point: `/`
-    - FS Label: _CachyOS_ for me
-    
-    If needed, you can resize it to make room for a `swap` partition. In that case, change the _Size_ at the top.
+
+[![CachyOS installer](assets/cachyos-install.webp "CachyOS installer")](assets/cachyos-install.webp)
+
+Double click on the partition you previously named _Linux_. We need to change the partition as follow:
+- Content: Format
+- File system: `ext4` or `Btrfs`
+- Mount point: `/`
+- FS Label: _CachyOS_ for me
+
+If needed, you can resize it to make room for a `swap` partition. In that case, change the _Size_ at the top.
 
 3. Now double click on the _EFI_ partition. Make sure you have the following:
     - Content: Keep
@@ -161,22 +158,22 @@ Also, I found it easier to setup rEFInd as a boot manager and was able to get it
 
 1. Boot into your Linux installation
 2. Install rEFInd. The command to install it depends on your distro:
-    
-    **Arch based**:
-    ```
-    sudo pacman -S refind
-    sudo refind-install
-    ```
-    **Debian based**:
-    ```
-    sudo apt update
-    sudo apt install refind
-    ```
-    **Fedora based**:
-    ```
-    sudo dnf install refind
-    sudo refind-install
-    ```
+
+**Arch based**:
+```
+sudo pacman -S refind
+sudo refind-install
+```
+**Debian based**:
+```
+sudo apt update
+sudo apt install refind
+```
+**Fedora based**:
+```
+sudo dnf install refind
+sudo refind-install
+```
 For other distros or manual installation, refer to the [official rEFInd website](https://www.rodsbooks.com/refind/installing.html).
 
 ### Configuring rEFInd
@@ -184,63 +181,61 @@ For other distros or manual installation, refer to the [official rEFInd website]
 This repository contains my custom `theme.conf` file. You can [download](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) that and use it as a starting point. I recommend you to keep reading and modify it to your needs, especially if you are using a different distro than me. The theme I'm using is slightly a modified version of [rEFInd minimal black](https://github.com/andersfischernielsen/rEFInd-minimal-black).
 
 1. You need to get the `UUID` for your Linux partition. Open a Terminal and type `lsblk -f`. You'll see something like this:
-    
-    ```
-    NAME        FSTYPE FSVER LABEL   UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
-    sda                                                                                   
-    ├─sda1                                                                                
-    └─sda2      ntfs         Datos   F6FE4410FE43C797                                     
-    zram0       swap   1     zram0   73176885-3bf6-4627-9184-eac74ddfe4bb                [SWAP]
-    nvme0n1                                                                               
-    ├─nvme0n1p1 vfat   FAT32 EFI     67E3-17ED                             114,8M    42% /boot/efi
-    ├─nvme0n1p2 apfs                 f1fc7a76-0380-4e02-9180-954089400214                 
-    ├─nvme0n1p3 ntfs         Windows F4F212CAF21290CA                                     
-    ├─nvme0n1p4 btrfs        CachyOS 09354f10-a3e8-4ec6-a95c-2adbad1735ea  588,4G     4% /var/tmp
-    │                                                                                    /var/log
-    │                                                                                    /var/cache
-    │                                                                                    /srv
-    │                                                                                    /root
-    │                                                                                    /home
-    │                                                                                    /
-    ├─nvme0n1p5                                                                           
-    └─nvme0n1p6 swap   1             0860ff70-86a6-4a00-9625-53bdac8c4473                [SWAP]
-    ```
-    From this output you need to copy the `UUID` for CachyOS.
+```
+NAME        FSTYPE FSVER LABEL   UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+sda                                                                                   
+├─sda1                                                                                
+└─sda2      ntfs         Datos   F6FE4410FE43C797                                     
+zram0       swap   1     zram0   73176885-3bf6-4627-9184-eac74ddfe4bb                [SWAP]
+nvme0n1                                                                               
+├─nvme0n1p1 vfat   FAT32 EFI     67E3-17ED                             114,8M    42% /boot/efi
+├─nvme0n1p2 apfs                 f1fc7a76-0380-4e02-9180-954089400214                 
+├─nvme0n1p3 ntfs         Windows F4F212CAF21290CA                                     
+├─nvme0n1p4 btrfs        CachyOS 09354f10-a3e8-4ec6-a95c-2adbad1735ea  588,4G     4% /var/tmp
+│                                                                                    /var/log
+│                                                                                    /var/cache
+│                                                                                    /srv
+│                                                                                    /root
+│                                                                                    /home
+│                                                                                    /
+├─nvme0n1p5                                                                           
+└─nvme0n1p6 swap   1             0860ff70-86a6-4a00-9625-53bdac8c4473                [SWAP]
+```
+From this output you need to copy the `UUID` for CachyOS.
+
 2. Open the `refind/themes/minimal-black/theme.conf` file downloaded from this repo using a text editor
 3. Near the end of the file there's an entry for Linux that says `menuentry "CachyOS" { ...`
 4. Inside that block find the line that starts with `options` and replace the `UUID` string with the one you got on the Terminal. For me it is `09354f10-a3e8-4ec6-a95c-2adbad1735ea`
 5. Change anything else in the file to your liking. Read the file comments to understand what every line is doing
 6. Copy the folder `minimal-black` to `/boot/efi/EFI/refind/themes/`
 7. Use a text editor to change the default rEFInd configuration file located in `/boot/efi/EFI/refind/refind.conf`. Add the following at the end of the file:
-    
-   ```
-    # Custom config
-    include themes/minimal-black/theme.conf
-    ```
+```
+# Custom config
+include themes/minimal-black/theme.conf
+```
 8. Inside the EFI folder you got from this repo, there's a folder called `tools`. Copy that folder to `/boot/efi/EFI/` to get _UEFI Shell_ working in the rEFInd boot picker
 9. After copying everything your EFI system partition should look like this:
-    
-    ```
-    EFI System Partition/
-    └── EFI/
-        ├── BOOT/
-        │   └── BOOTx64.efi
-        ├── cachyos/
-        │   └── grubx64.efi
-        ├── Microsoft
-        │   └── Boot/
-        │   └── Recovery/
-        ├── OC/
-        │   └── ACPI/
-        │   └── Drivers/
-        │   └── Kexts/
-        │   └── Resources/
-        │   └── Tools/
-        │   └── config.plist
-        │   └── OpenCore.efi
-        ├── refind/
-        └── tools/
-    ```
+```
+EFI System Partition/
+└── EFI/
+    ├── BOOT/
+    │   └── BOOTx64.efi
+    ├── cachyos/
+    │   └── grubx64.efi
+    ├── Microsoft
+    │   └── Boot/
+    │   └── Recovery/
+    ├── OC/
+    │   └── ACPI/
+    │   └── Drivers/
+    │   └── Kexts/
+    │   └── Resources/
+    │   └── Tools/
+    │   └── config.plist
+    │   └── OpenCore.efi
+    ├── refind/
+    └── tools/
+```
 Now you'll be able to boot into Windows, Linux and macOS directly from the rEFInd boot picker.
 
 # Finishing touches
