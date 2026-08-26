@@ -314,8 +314,8 @@ Here's the output:
 
 If you are able to unlock it, remember to **disable** the following in your `config.plist`:
 
-- `Kernel -> Quirks -> AppleCpuPmCfgLock: False`
-- `Kernel -> Quirks -> AppleXcpmCfgLock: False`
+- `Kernel > Quirks > AppleCpuPmCfgLock: False`
+- `Kernel > Quirks > AppleXcpmCfgLock: False`
 
 # FAQ
 
