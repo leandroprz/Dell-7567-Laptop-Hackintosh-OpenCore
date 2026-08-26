@@ -71,9 +71,10 @@ For our setup we can just use **200MB** (the macOS default) and it will work jus
 We'll use the macOS installer to create the partitions and set their sizes from the start. Then we'll deal with the file systems for each OS.
 
 1. Boot using your macOS USB stick. Once you get to the macOS installer, choose _Disk Utility_. On the top left click on _View > Show All Devices_. Select your internal SSD drive and click on _Erase_. Format it:
-    - Name: _macOS_
-    - Format: `APFS`
-    - Scheme: `GUID Partition Map`
+- Name: _macOS_
+- Format: `APFS`
+- Scheme: `GUID Partition Map`
+
 2. Select the SSD drive and click on _Partition_. You will see a new window where you can choose how many partitions you want.
     
     When clicking on the `+` button to add a new partition, you might get a message like _"Do you want to add a volume to the APFS container or do you want to divide the container’s storage into separate partitions?"_, if that's the case, click on _Add Partition_.
