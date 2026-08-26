@@ -315,7 +315,7 @@ Here's the output:
 If you are able to unlock it, remember to **disable** the following in your `config.plist`:
 
 - `Kernel -> Quirks -> AppleCpuPmCfgLock: False`
-- `Kernel -> Quirks -> AppleXcpmCfgLock_: False`
+- `Kernel -> Quirks -> AppleXcpmCfgLock: False`
 
 # FAQ
 
@@ -326,7 +326,7 @@ If you are able to unlock it, remember to **disable** the following in your `con
 - `VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Trackpad.kext`
 - `VoodooPS2Controller.kext/Contents/PlugIns/VoodooInput.kext`
 
-When updating _VoodooPS2Controller_ or _OpenCore_ it is always recommended to to an _OC Snapshot_ using [ProperTree](https://github.com/corpnewt/ProperTree). That program will always add the plugins back into the `config.plist`. So instead of dealing with that and deleting the plugins on every update, I just disabled them.
+When updating `VoodooPS2Controller` or OpenCore it is always recommended to to an _OC Snapshot_ using [ProperTree](https://github.com/corpnewt/ProperTree). That program will always add the plugins back into the `config.plist`. So instead of dealing with that and deleting the plugins on every update, I just disabled them.
 
 ## Can you port this for X machine?
 
