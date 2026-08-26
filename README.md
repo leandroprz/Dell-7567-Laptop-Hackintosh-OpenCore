@@ -429,6 +429,7 @@ For other issues I recommend you to check the following:
   - [Enabling Touchpad Support on Laptops](https://github.com/5T33Z0/OC-Little-Translated/tree/main/Content/05_Laptop-specific_Patches/Trackpad_Patches)
   - [Using unsupported Board-IDs with macOS 11.3 to 26](https://github.com/5T33Z0/OC-Little-Translated/tree/main/Content/09_Board-ID_VMM-Spoof)
 - [OCLP-4-Hackintosh](https://github.com/5T33Z0/OCLP4Hackintosh)
+- [OpenCore Visual Beginners Guide](https://chriswayg.gitbook.io/opencore-visual-beginners-guide)
 - [On fixing the trackpad (solution included)](https://github.com/Lukitronix/How-to-make-a-Hackintosh/issues/1)
 - [Enable I2C Trackpad (VoodooI2C) - Not a Guide... not really](https://olarila.com/topic/5644-enable-i2c-trackpad-voodooi2c-not-a-guide-not-really/)
 - [How to Fix Static Noise and Audio Distortion in Headphones on Laptops](https://elitemacx86.com/threads/how-to-fix-static-noise-and-audio-distortion-in-headphones-on-laptops-clover-opencore.2200/)
