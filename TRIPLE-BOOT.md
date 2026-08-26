@@ -82,16 +82,16 @@ We'll use the macOS installer to create the partitions and set their sizes from 
 Select the sizes you want for your partitions and set them up:
 
 **macOS**
-    - Name: _macOS_
-    - Format: `APFS`
+- Name: _macOS_
+- Format: `APFS`
 
 **Windows**
-    - Name: _Windows_
-    - Format: `ExFAT`
+- Name: _Windows_
+- Format: `ExFAT`
 
 **Linux**
-    - Name: _Linux_
-    - Format: `ExFAT`
+- Name: _Linux_
+- Format: `ExFAT`
 
 Click on _Apply_.
 
