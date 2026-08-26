@@ -34,7 +34,7 @@ Keep in mind that this is meant to be used as a starting point to get you quickl
 
 # Overview
 
-Here I'll share some information I gathered along the way while building my EFI for this 2017 laptop as well as some recommendations to get everything working as stable as possible.
+I'll share some information I gathered along the way while building my EFI for this 2017 laptop as well as some recommendations to get everything working as stable as possible.
 
 Right now I'm triple booting _Windows 11_, _macOS Sequoia_ and _CachyOS_ on a **single NVMe drive** and everything works perfectly fine. If you only want to install macOS, just keep reading. If you want to double or triple boot, first take a look at the [Triple boot setup guide](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/blob/main/triple-boot.md), since it is important to first partition your drive the right way to avoid issues down the road.
 
@@ -133,7 +133,7 @@ You MUST add your own _System Serial Number_, _System UUID_, _MLB_ and _ROM_ in 
 
 1. [Download](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git`
 2. Run [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) and drop the `config.plist` in there to generate the _System Serial Number_, _System UUID_ and _MLB_ using `MacBookPro14,3` for the _SMBIOS_
-3. For the _ROM_ you should use your Ethernet/WiFi MAC address (e.g.: `A4:80:F6:J8:I2:5K`). You can get this value by running `ipconfig /all` on Windows or `ifconfig` on macOS/Linux. Copy the MAC, open [ProperTree](https://github.com/corpnewt/ProperTree) and paste the value in _PlatformInfo > Generic > ROM_ with no colon `:` (e.g.: `a480f6j8i25k`)
+3. For the _ROM_ you should use your Ethernet/WiFi MAC address (e.g.: `A4:80:F6:J8:I2:5K`). You can get this value by running `ipconfig /all` on Windows or `ifconfig` on macOS/Linux. Copy the MAC, open [ProperTree](https://github.com/corpnewt/ProperTree) and paste the value in `PlatformInfo > Generic > ROM` with no colon `:` (e.g.: `A480F6J8I25K`)
 4. Go to [Apple's Check Coverage Page](https://checkcoverage.apple.com/) and make sure your _System Serial Number_ shows up as **invalid serial**. You should get a message such as _The serial number you've entered isn't valid_. For more detailed instructions, refer to [Dortania's OpenCore Guide](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html#serial-number-validity)
 
 ## NVRAM values in `config.plist`
@@ -146,12 +146,12 @@ You MUST add your own _System Serial Number_, _System UUID_, _MLB_ and _ROM_ in 
 1. [Download](https://www.dell.com/support/product-details/en-us/product/inspiron-15-7567-laptop/drivers?driverid=CRHGK&driveros=biosa&ld=CRHGK) and update the BIOS to the latest version
 2. Reboot the laptop while pressing `F2` to get into the BIOS menu and reset to default settings
 3. Reboot again, go to the BIOS menu one more time and change the following settings to be able to boot into macOS. Key Settings:
-    - _General > Advanced Boot Options > Enable Legacy Option ROMs_ - Disable this option
-    - _System Configuration > SATA Operation_ - Select _AHCI_
-    - _Security > Secure Boot > Secure Boot Enable_ - Select _Disabled_
-    - _Intel Software Guard Extensions > Intel SGX Enable_ - Disable this option
-    - _POST Behavior > Fastboot_ - Select _Thorought_
-    - _Virtualization Support > Virtualization > Enable Intel Virtualization Technology_ - Enable this option
+    - `General > Advanced Boot Options > Enable Legacy Option ROMs: Disabled`
+    - `System Configuration > SATA Operation: AHCI`
+    - `Security > Secure Boot > Secure Boot Enable: Disabled`
+    - `Intel Software Guard Extensions > Intel SGX Enable: Disable`
+    - `POST Behavior > Fastboot: Thorought`
+    - `Virtualization Support > Virtualization > Enable Intel Virtualization Technology: Enabled`
 
 The other settings can be left as is or change them to whatever you need.
 
@@ -170,9 +170,9 @@ Follow the [Creating the USB OpenCore Install Guide](https://dortania.github.io/
 1. Download and run [Mist](https://github.com/ninxsoft/Mist) to get a full offline installer
 2. Open _Disk Utility_, click on the _View_ button on the top left and select _Show All Devices_
 3. Select your USB stick, click on _Erase_ and format it:
-    - Name: USB
-    - Format: Mac OS Extended (Journaled)
-    - Scheme: GUID Partition Map
+    - Name: _USB_
+    - Format: `Mac OS Extended (Journaled)`
+    - Scheme: `GUID Partition Map`
 4. Open the Terminal and run the following command:
 ```
 sudo /Applications/Install\ macOS\ Sequoia.app/Contents/Resources/createinstallmedia --volume /Volumes/USB
@@ -230,9 +230,9 @@ At the OpenCore boot picker:
 1. Select _Install macOS Sequoia_
 2. Once at the installer screen, open _Disk Utility_. On the top left click on _View_ and then on _Show All Devices_
 3. Select your internal SSD drive and click on _Erase_. Format it:
-    - Name: macOS
-    - Format: APFS
-    - Scheme: GUID Partition Map
+    - Name: _macOS_
+    - Format: `APFS`
+    - Scheme: `GUID Partition Map`
 4. Close _Disk Utility_ and follow the macOS installation process selecting the drive you just formated. Your system will restart about 3 times. On each reboot the proper option to continue with the installation should be automatically selected for you until the installation process completes and you see the desktop
 
 # Post-Installation
@@ -244,7 +244,7 @@ At the OpenCore boot picker:
 
 ## Getting WiFi working
 
-You will see no available WiFi networks on the top bar or in _System Settings > Wi-Fi_. Since we are using `itlwm.kext` to get WiFi working, you need to install an app called [HeliPort](https://github.com/OpenIntelWireless/HeliPort) to see and connect to the available networks around you.
+You will see no available WiFi networks on the top bar or in `System Settings > Wi-Fi`. Since we are using `itlwm.kext` to get WiFi working, you need to install an app called [HeliPort](https://github.com/OpenIntelWireless/HeliPort) to see and connect to the available networks around you.
 
 ## USB mapping
 
@@ -262,9 +262,9 @@ When mapping you should see the following for the three internal devices I menti
 
 In my case they show as:
 
-- Port 4: Bluetooth
-- Port 7: SD card connected to the card reader
-- Port 12: Integrated webcam
+- `Port 4`: Bluetooth
+- `Port 7`: SD card connected to the card reader
+- `Port 12`: Integrated webcam
 
 Yours might be a different number. Just make sure the type for those ports is set to `Internal: 255`. All the other ports should be mapped as both types USB 2 and USB 3.
 
@@ -277,9 +277,9 @@ When mapping you should see the following for the three internal devices I menti
 [![USBMap on macOS](assets/usbmap-mac.webp "USBMap on macOS")](assets/usbmap-mac.webp)
 In my case they show as:
 
-- Port 4: Bluetooth
-- Port 7: SD card connected to the card reader
-- Port 12: Integrated webcam
+- `Port 4`: Bluetooth
+- `Port 7`: SD card connected to the card reader
+- `Port 12`: Integrated webcam
 
 Yours might be a different number. Just make sure the type for those ports is set to `Internal: 255`. All the other ports should be mapped as both types USB 2 and USB 3.
 
@@ -289,11 +289,11 @@ macOS needs a BIOS setting called _CFG Lock_ to be disabled to run stable. Since
 
 For this step I'll share what I've found on my hardware + BIOS firmware, but it is strongly recommended to check if your setup is using the same offset, because offsets are unique not just to each motherboard but even to its firmware version.
 
-After checking that my firmware was indeed locked using [_ControlMsrE2.efi_](https://github.com/acidanthera/OpenCorePkg/releases), I extracted the offset and this is what I got:
+After checking that my firmware was indeed locked using [_ControlMsrE2_](https://github.com/acidanthera/OpenCorePkg/releases), I extracted the offset and this is what I got:
 ```
 CFG Lock, VarStoreInfo (VarOffset/VarName): 0x4DE, VarStore: 0x1
 ```
-And:
+...and:
 ```
 VarStore: VarStoreId: 0x1 [EC87D643-EBA4-4BB5-A1E5-3F3E36B20DA9], Size: 0x13A3, Name: Setup {24 1C 43 D6 87 EC A4 EB B5 4B A1 E5 3F 3E 36 B2 0D A9 01 00 A3 13 53 65 74 75 70 00}
 ```
@@ -314,19 +314,23 @@ Here's the output:
 
 If you are able to unlock it, remember to **disable** the following in your `config.plist`:
 
-- _Kernel -> Quirks -> AppleCpuPmCfgLock_ - Set it to False
-- _Kernel -> Quirks -> AppleXcpmCfgLock_ - Set it to False
+- `Kernel -> Quirks -> AppleCpuPmCfgLock: False`
+- `Kernel -> Quirks -> AppleXcpmCfgLock_: False`
 
 # FAQ
 
 ## Why are there some kexts/plugins disabled?
 
-**It's easier to maintain**. _VoodooPS2Controller_ comes with several bundled plugins, but not all of them are needed on this hardware. So instead of deleting them I decided to disable the following:
+**It's easier to maintain**. `VoodooPS2Controller` comes with several bundled plugins, but not all of them are needed on this hardware. So instead of deleting them I decided to disable the following:
 
 - `VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Trackpad.kext`
 - `VoodooPS2Controller.kext/Contents/PlugIns/VoodooInput.kext`
 
 When updating _VoodooPS2Controller_ or _OpenCore_ it is always recommended to to an _OC Snapshot_ using [ProperTree](https://github.com/corpnewt/ProperTree). That program will always add the plugins back into the `config.plist`. So instead of dealing with that and deleting the plugins on every update, I just disabled them.
+
+## Can you port this for X machine?
+
+No.
 
 # Troubleshooting
 
@@ -424,7 +428,7 @@ For other issues I recommend you to check the following:
   - [Kext Loading Sequence Examples](https://github.com/5T33Z0/OC-Little-Translated/tree/main/Content/10_Kexts_Loading_Sequence_Examples)
   - [Enabling Touchpad Support on Laptops](https://github.com/5T33Z0/OC-Little-Translated/tree/main/Content/05_Laptop-specific_Patches/Trackpad_Patches)
   - [Using unsupported Board-IDs with macOS 11.3 to 26](https://github.com/5T33Z0/OC-Little-Translated/tree/main/Content/09_Board-ID_VMM-Spoof)
-  - [OCLP-4-Hackintosh](https://github.com/5T33Z0/OCLP4Hackintosh)
+- [OCLP-4-Hackintosh](https://github.com/5T33Z0/OCLP4Hackintosh)
 - [On fixing the trackpad (solution included)](https://github.com/Lukitronix/How-to-make-a-Hackintosh/issues/1)
 - [Enable I2C Trackpad (VoodooI2C) - Not a Guide... not really](https://olarila.com/topic/5644-enable-i2c-trackpad-voodooi2c-not-a-guide-not-really/)
 - [How to Fix Static Noise and Audio Distortion in Headphones on Laptops](https://elitemacx86.com/threads/how-to-fix-static-noise-and-audio-distortion-in-headphones-on-laptops-clover-opencore.2200/)
