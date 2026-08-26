@@ -1,11 +1,12 @@
-# Hackintosh triple boot
+# Dell 7567 laptop - Hackintosh triple boot
 
 [![rEFInd boot picker](assets/triple-boot-refind-picker.webp "rEFInd boot picker")](assets/triple-boot-refind-picker.webp)
 
 [![macOS](https://img.shields.io/badge/macOS-Sequoia%2015.7.9-d3a94e?style=for-the-badge)](#) [![Windows](https://img.shields.io/badge/Windows%2011-25H2-61a0d3?style=for-the-badge)](#) [![Linux](https://img.shields.io/badge/Linux-CachyOS-2d8c8c?style=for-the-badge)](#)
 
-Dual or triple booting a hackintosh is easy if you keep in mind a few things before starting the whole process. 
-Here I'll briefly explain how I got the three systems running on a single drive on the **Dell 7567** laptop from the start, without the need to resize any partition after the installation.
+Dual or triple booting a hackintosh is not a difficult task when you get it right from the start. I'll briefly explain how I got the three systems running on a single drive on the **Dell 7567** laptop from the start, without the need to resize any partition after the installation.
+
+Keep in mind this is a companion guide for the main one on [this repository](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore) to install macOS on the previously mentioned laptop.
 
 # TL;DR
 
@@ -20,9 +21,11 @@ Here I'll briefly explain how I got the three systems running on a single drive 
     - Install _GRUB_ on your distro
     - Use `ext4` or `Btrfs` for the OS and mount it on `/`
     - For the existing EFI partition created by macOS, keep `FAT32`, mount it on `/boot/efi` and use the flag `boot`. **Do not** format this one!
-6. Boot using the macOS USB stick and copy the EFI folder from this repo into the EFI system partition
+6. Boot using the macOS USB stick and copy the EFI folder from this repo into your EFI system partition
 7. Boot into Linux and install [rEFInd](https://www.rodsbooks.com/refind/index.html), it will allow you to boot into macOS, Windows and Linux
-8. Configure rEFInd to your needs from Linux or macOS by modifying the `refind.conf` file located in the EFI system partition
+8. [Download](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) or clone this repository: `git clone https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore.git` to get my rEFInd theme and configuration
+9. Copy the folder `minimal-black` to `/boot/efi/EFI/refind/themes/`
+10. Configure rEFInd to your needs from Linux or macOS by modifying the `refind.conf` and `theme.conf` files located in the EFI system partition
 
 **If you want to learn more or need to do some troubleshooting, keep reading.**
 
@@ -30,7 +33,7 @@ Here I'll briefly explain how I got the three systems running on a single drive 
 
 Three things are important for this to work: installation order of the operating systems, partition sizes before installing them and their respective file systems.
 
-Below I'll explain the steps you need to follow and how to get all three systems to show up on a boot picker.
+I'll explain the steps you need to follow and how to get all three systems to show up on a themed boot picker.
 
 ## Installation order
 
@@ -44,11 +47,13 @@ This laptop has space for two physical drives. I wanted to use one for the opera
 
 ## Partition sizes
 
-We need to know how much space we'll asign to each system from the start, this is to avoid resizing partitions after the installation as that can cause booting issues.
+We need to know how much space we'll asign to each system from the start, this is to avoid resizing partitions after each installation as that can cause booting issues.
 
-Let's do some simple math. I have a 2TB NVme drive, so I decided each OS will get a third of the drive: `(2TB x 1024) ÷ 3 systems = ~680GB`. Each OS will have around **680GB**.
-
-This is just an estimate, since:
+Let's do some simple math. I have a 2TB NVme drive, so I decided each OS will get a third of the drive:
+```
+(2TB x 1024) ÷ 3 systems = ~680GB
+```
+Each OS will have around **680GB**. This is just an estimate, since:
 - The exact formatted capacity depends slightly on the filesystem
 - There's a difference between decimal terabytes (TB) used by manufacturers and binary tebibytes (TiB) used internally by operating systems
 - We also need to account space for the `EFI/ESP` partition
@@ -57,11 +62,9 @@ This is just an estimate, since:
 
 The size of this partition will be determined by the boot manager we'll be using for our three systems. In our case it will be [rEFInd](https://www.rodsbooks.com/refind/index.html).
 
-Some guides recommend the size of the EFI partition to be [1GB](https://wiki.archlinux.org/title/EFI_system_partition#Create_the_partition), others [2GB](https://wiki.cachyos.org/installation/installation_on_root/#size-at-least-2048-mib) or even more, because they are adding the size of the Linux kernel into it. But we'll configure the Linux installation to not use the EFI partition to store the kernel. Instead we'll use the Linux partition itself, where `/home` and `/` are located.
+Some guides recommend the size of the EFI partition to be [1GB](https://wiki.archlinux.org/title/EFI_system_partition#Create_the_partition), others [2GB](https://wiki.cachyos.org/installation/installation_on_root/#size-at-least-2048-mib) or even more, because they are adding the size of the Linux kernel into it. But we'll configure the Linux installation to not use the EFI system partition to store the kernel. Instead we'll use the Linux partition itself, where `/home` and `/` are located.
 
-For our setup we can just use **200MB** (the macOS default) and it will work just fine. You can, however, follow the advice of the linked guides above if you prefer and adjust your partition sizes accordingly.
-
-You can also add the size of this partition to the math we did before, but it's so small you won't notice the difference practically (if using 200MB).
+For our setup we can just use **200MB** (the macOS default) and it will work just fine. You can, however, follow the advice of the linked guides above if you prefer and adjust your partition sizes accordingly. You can also add the size of this partition to the math we did before, but it's so small you won't notice the difference practically (if using 200MB).
 
 # Partitioning the hard drive
 
@@ -91,9 +94,9 @@ We'll use the macOS installer to create the partitions and set their sizes from 
 
     Click on _Apply_.
     
-    An identifying name for each partition will be useful on the next steps. Don't mind the ExFAT partitions for now, they are serving as placeholders.
+    An identifying name for each partition will be useful on the next steps. Don't mind the `ExFAT` partitions for now, they are serving as placeholders.
 
-# Installation order
+# Installing the OSes
 
 ## 1. macOS
 
@@ -107,14 +110,14 @@ We'll use the macOS installer to create the partitions and set their sizes from 
 
     [![Windows installer](assets/win-install.webp "Windows installer")](assets/win-install.webp)
 
-3. Choose the one you previously named _Windows_, format it (the default file system is NTFS, this is automatic) and install Windows. The installer will probably overwrite the macOS EFI partition, but we'll fix that later
+3. Choose the one you previously named _Windows_, format it (the default file system is `NTFS`, this is selected automatically) and install Windows. The installer will probably overwrite the macOS EFI partition, but we'll fix that later
 4. Once finished, shutdown the computer and plug the Linux USB installer
 
 ## 3. Linux
 
 This step will vary depending on your distro. I chose [CachyOS](https://cachyos.org/) for this laptop. Since CachyOS uses _Calamares_ as the installer, I'll be showing that. But no matter the distro, you basically need to install _GRUB_ as the bootloader and partition your drive as shown in the next steps. The partitioning can also be done using [GParted](https://gparted.org/).
 
-1. Boot using your Linux USB. The CachyOS installer will ask you to select a bootloader, choose _GRUB_. We won't be using it, but since CachyOS doesn't have an option to not install a bootloader, I'm selecting that. Plus, it is a good idea to have GRUB as a fallback in case _rEFInd_ fails
+1. Boot using your Linux USB. The CachyOS installer will ask you to select a bootloader, choose _GRUB_. We won't be using it, but since CachyOS doesn't have an option to not install a bootloader, I'm selecting that. Plus, it is a good idea to have GRUB as a fallback in case _rEFInd_ fails after an update
 2. When asked how you want to partition the drive, select _Manual partitioning_. You'll see something like this:
     
     [![CachyOS installer](assets/cachyos-install.webp "CachyOS installer")](assets/cachyos-install.webp)
@@ -126,7 +129,7 @@ This step will vary depending on your distro. I chose [CachyOS](https://cachyos.
     - Mount point: `/`
     - FS Label: _CachyOS_ for me
     
-    If needed, you can resize it to make room for a **swap** partition. In that case, change the _Size_ at the top.
+    If needed, you can resize it to make room for a `swap` partition. In that case, change the _Size_ at the top.
 
 3. Now double click on the _EFI_ partition. Make sure you have the following:
     
@@ -136,7 +139,7 @@ This step will vary depending on your distro. I chose [CachyOS](https://cachyos.
     - FS Label: _EFI_
     - Flags: `boot`
 
-4. Click on _Next_ to continue with the installation. You might get a warning about the EFI partition size, but you can ignore it. Select your desktop manager and finish the installation
+4. Click on _Next_ to continue with the installation. You might get a warning about the EFI partition size, but you can ignore it. Select your desktop environment and finish the installation
 
 # Boot manager configuration
 
@@ -146,26 +149,8 @@ Since Windows probably replaced the macOS configuration on the EFI system partit
 
 1. Boot using the macOS USB stick and from the OpenCore boot picker select the macOS installation that's already present in your internal SSD drive
 2. Once at the desktop run [MountEFI](https://github.com/corpnewt/MountEFI) and mount both the USB and internal SSD EFI partitions
-3. Copy the EFI folder from the USB to the internal SSD EFI partition. Your _Linux distro_ and _Microsoft_ folders should already be present. Your EFI system partition should look like this:
-```
-EFI System Partition/
-└── EFI/
-    ├── BOOT/
-    │   └── BOOTx64.efi
-    ├── cachyos/
-    │   └── grubx64.efi
-    ├── Microsoft
-    │   └── Boot/
-    │   └── Recovery/
-    └── OC/
-        └── ACPI/
-        └── Drivers/
-        └── Kexts/
-        └── Resources/
-        └── Tools/
-        └── config.plist
-        └── OpenCore.efi
-```
+3. Copy the EFI folder from the USB to the internal SSD EFI partition. Your _Linux distro_ and _Microsoft_ folders should already be present in there
+
 ## Installing and configuring rEFInd
 
 Why [rEFInd](https://www.rodsbooks.com/refind/index.html) instead of OpenCore? Simply put, the OpenCore bootloader will apply some macOS specific unwanted patches to the other systems when booting and we want to avoid that. You can read more about it [here](https://chriswayg.gitbook.io/opencore-visual-beginners-guide/advanced-topics/dual-boot-options).
@@ -198,7 +183,7 @@ For other distros or manual installation, refer to the [official rEFInd website]
 
 This repository contains my custom `theme.conf` file. You can [download](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) that and use it as a starting point. I recommend you to keep reading and modify it to your needs, especially if you are using a different distro than me. The theme I'm using is slightly a modified version of [rEFInd minimal black](https://github.com/andersfischernielsen/rEFInd-minimal-black).
 
-1. You need to get your SSD's UUID. Open a Terminal and type `lsblk -f`. You'll see something like this:
+1. You need to get the `UUID` for your Linux partition. Open a Terminal and type `lsblk -f`. You'll see something like this:
     ```
     NAME        FSTYPE FSVER LABEL   UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
     sda                                                                                   
@@ -219,10 +204,10 @@ This repository contains my custom `theme.conf` file. You can [download](https:/
     ├─nvme0n1p5                                                                           
     └─nvme0n1p6 swap   1             0860ff70-86a6-4a00-9625-53bdac8c4473                [SWAP]
     ```
-    From this output you need the UUID for CachyOS.
+    From this output you need to copy the `UUID` for CachyOS.
 2. Open the `refind/themes/minimal-black/theme.conf` file downloaded from this repo using a text editor
 3. Near the end of the file there's an entry for Linux that says `menuentry "CachyOS" { ...`
-4. Inside that block find the line that starts with `options` and replace the UUID string with the one you got on the Terminal. In my case it is `09354f10-a3e8-4ec6-a95c-2adbad1735ea`
+4. Inside that block find the line that starts with `options` and replace the `UUID` string with the one you got on the Terminal. For me it is `09354f10-a3e8-4ec6-a95c-2adbad1735ea`
 5. Change anything else in the file to your liking. Read the file comments to understand what every line is doing
 6. Copy the folder `minimal-black` to `/boot/efi/EFI/refind/themes/`
 7. Use a text editor to change the default rEFInd configuration file located in `/boot/efi/EFI/refind/refind.conf`
@@ -258,11 +243,12 @@ Now you'll be able to boot into Windows, Linux and macOS directly from the rEFIn
 
 # Finishing touches
 
-We need to change our `config.plist` file to get a cleaner OpenCore boot picker.
-1. boot into macos and choose the startup disk in system config
-2. open MountEFI and mount your EFI system partition and open config.plist
-3. change Security > ScanPolicy > 2687747 (number) to only keep macOS related disks in the OpenCore boot picker
-4. To hide the opencore boot picker set Misc > Boot > ShowPicker > False
+We need to change our OpenCore `config.plist` to get a cleaner boot picker. This isn't just a cosmetic thing, it's to make sure OpenCore always boots into our macOS installation from rEFInd.
+
+1. Boot into macOS. Go to `System Settings > General > Startup Disk` and select the drive where you installed macOS
+2. Mount the SSD's EFI partition using [MountEFI](https://github.com/corpnewt/MountEFI) and open the `config.plist` file using [ProperTree](https://github.com/corpnewt/ProperTree)
+3. Change the following value: `Misc > Security > ScanPolicy: 2687747 (number)` to only keep macOS related disks in the OpenCore boot picker
+4. Change the following value: `Misc > Boot > ShowPicker: False`. This is to avoid showing the OpenCore boot picker. We don't need to see it since we are booting "directly" from rEFInd into macOS
 
 # References and credits
 
