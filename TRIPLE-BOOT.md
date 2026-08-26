@@ -132,7 +132,6 @@ This step will vary depending on your distro. I chose [CachyOS](https://cachyos.
     If needed, you can resize it to make room for a `swap` partition. In that case, change the _Size_ at the top.
 
 3. Now double click on the _EFI_ partition. Make sure you have the following:
-    
     - Content: Keep
     - File System: `FAT32`
     - Mount Point: `/boot/efi`
@@ -184,6 +183,7 @@ For other distros or manual installation, refer to the [official rEFInd website]
 This repository contains my custom `theme.conf` file. You can [download](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/archive/refs/heads/main.zip) that and use it as a starting point. I recommend you to keep reading and modify it to your needs, especially if you are using a different distro than me. The theme I'm using is slightly a modified version of [rEFInd minimal black](https://github.com/andersfischernielsen/rEFInd-minimal-black).
 
 1. You need to get the `UUID` for your Linux partition. Open a Terminal and type `lsblk -f`. You'll see something like this:
+    
     ```
     NAME        FSTYPE FSVER LABEL   UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
     sda                                                                                   
@@ -210,14 +210,15 @@ This repository contains my custom `theme.conf` file. You can [download](https:/
 4. Inside that block find the line that starts with `options` and replace the `UUID` string with the one you got on the Terminal. For me it is `09354f10-a3e8-4ec6-a95c-2adbad1735ea`
 5. Change anything else in the file to your liking. Read the file comments to understand what every line is doing
 6. Copy the folder `minimal-black` to `/boot/efi/EFI/refind/themes/`
-7. Use a text editor to change the default rEFInd configuration file located in `/boot/efi/EFI/refind/refind.conf`
-    Add the following at the end of the file:
+7. Use a text editor to change the default rEFInd configuration file located in `/boot/efi/EFI/refind/refind.conf`. Add the following at the end of the file:
+    
    ```
     # Custom config
     include themes/minimal-black/theme.conf
     ```
 8. Inside the EFI folder you got from this repo, there's a folder called `tools`. Copy that folder to `/boot/efi/EFI/` to get _UEFI Shell_ working in the rEFInd boot picker
 9. After copying everything your EFI system partition should look like this:
+    
     ```
     EFI System Partition/
     └── EFI/
