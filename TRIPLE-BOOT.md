@@ -50,9 +50,9 @@ We need to know how much space we'll asign to each system from the start, this i
 
 Let's do some simple math. I have a 2TB NVme drive, so I decided each OS will get a third of the drive:
 ```
-(2TB x 1024) ÷ 3 systems = ~680GB
+(2TB × 1000) ÷ 3 systems = ~666GB
 ```
-Each OS will have around **680GB**. This is just an estimate, since:
+Each OS will have around **666GB**. This is just an estimate, since:
 - The exact formatted capacity depends slightly on the filesystem
 - There's a difference between decimal terabytes (TB) used by manufacturers and binary tebibytes (TiB) used internally by operating systems
 - We also need to account space for the `EFI/ESP` partition
@@ -70,10 +70,9 @@ For our setup we can just use **200MB** (the macOS default) and it will work jus
 We'll use the macOS installer to create the partitions and set their sizes from the start. Then we'll deal with the file systems for each OS.
 
 1. Boot using your macOS USB stick. Once you get to the macOS installer, choose _Disk Utility_. On the top left click on _View > Show All Devices_. Select your internal SSD drive and click on _Erase_. Format it:
-- Name: _macOS_
-- Format: `APFS`
-- Scheme: `GUID Partition Map`
-
+    - Name: _macOS_
+    - Format: `APFS`
+    - Scheme: `GUID Partition Map`
 2. Select the SSD drive and click on _Partition_. You will see a new window where you can choose how many partitions you want.
 3. When clicking on the `+` button to add a new partition, you might get a message like _"Do you want to add a volume to the APFS container or do you want to divide the container’s storage into separate partitions?"_, if that's the case, click on _Add Partition_.
 4. Create three partitions to get something like this:
@@ -81,13 +80,16 @@ We'll use the macOS installer to create the partitions and set their sizes from 
 [![Partition the drive in macOS](assets/macos-disk-util-partition.webp "Partition the drive in macOS")](assets/macos-disk-util-partition.webp)
 
 Select the sizes you want for your partitions and set them up:
-- macOS
+
+**macOS**
     - Name: _macOS_
     - Format: `APFS`
-- Windows
+
+**Windows**
     - Name: _Windows_
     - Format: `ExFAT`
-- Linux
+
+**Linux**
     - Name: _Linux_
     - Format: `ExFAT`
 
