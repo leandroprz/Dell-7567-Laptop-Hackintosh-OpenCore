@@ -2,7 +2,7 @@
 
 [![rEFInd boot picker](assets/triple-boot-refind-picker.webp "rEFInd boot picker")](assets/triple-boot-refind-picker.webp)
 
-[![macOS](https://img.shields.io/badge/macOS-Sequoia%2015.7.9-d3a94e?style=for-the-badge)](#) [![Windows](https://img.shields.io/badge/Windows%2011-25H2-61a0d3?style=for-the-badge)](#) [![Linux](https://img.shields.io/badge/Linux-CachyOS-2d8c8c?style=for-the-badge)](#)
+[![macOS](https://img.shields.io/badge/macOS-Tahoe%2026.7.1-d3a94e?style=for-the-badge)](#) [![Windows](https://img.shields.io/badge/Windows%2011-25H2-61a0d3?style=for-the-badge)](#) [![Linux](https://img.shields.io/badge/Linux-CachyOS-2d8c8c?style=for-the-badge)](#)
 
 Dual or triple booting a hackintosh is not a difficult task when you get it right from the start. I'll briefly explain how I got the three systems running on a single drive on the **Dell 7567** laptop from the start, without the need to resize any partition after the installation.
 
