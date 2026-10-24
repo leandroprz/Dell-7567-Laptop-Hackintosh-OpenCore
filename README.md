@@ -1,15 +1,8 @@
-# Dell 7567 laptop Hackintosh - OpenCore 1.0.7
+# Dell 7567 laptop Hackintosh - OpenCore bootloader
 
-<p align="center">
-    <a href="assets/dell-7567-macos-desktop.webp" title="Dell 7567 laptop running macOS">
-        <img src="assets/dell-7567-macos-desktop.webp" alt="Dell 7567 laptop running macOS" width="48%" height="auto" />
-    </a>
-    <a href="assets/macbook-pro-sequoia-desktop.webp" title="MacBook Pro Sequoia desktop">
-        <img src="assets/macbook-pro-sequoia-desktop.webp" alt="MacBook Pro Sequoia desktop" width="48%" height="auto" />
-    </a>
-</p>
+[![MacBook Pro Tahoe desktop](assets/macbook-pro-tahoe-desktop.webp "MacBook Pro Tahoe desktop")](assets/macbook-pro-tahoe-desktop.webp)
 
-[![macOS](https://img.shields.io/badge/macOS-Sequoia%2015.7.9-d3a94e?style=for-the-badge)](#) [![OpenCore](https://img.shields.io/badge/OpenCore-1.0.7-41a1bf?style=for-the-badge)](#) [![Dell BIOS](https://img.shields.io/badge/Dell%20BIOS-1.15.0-b75252?style=for-the-badge)](#)
+[![macOS](https://img.shields.io/badge/macOS-Tahoe%2026.7.1-d3a94e?style=for-the-badge)](#) [![OpenCore](https://img.shields.io/badge/OpenCore-1.0.8-41a1bf?style=for-the-badge)](#) [![Dell BIOS](https://img.shields.io/badge/Dell%20BIOS-1.15.0-b75252?style=for-the-badge)](#)
 
 This is my manually built EFI following [Dortania's OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/) that uses the [OpenCore bootloader](https://github.com/acidanthera/OpenCorePkg).
 
@@ -24,7 +17,7 @@ Keep in mind that this is meant to be used as a starting point to get you quickl
 3. Use [Mist](https://github.com/ninxsoft/Mist) on an Intel Mac to get the `.app` installer or follow the [Dortania Creating the USB guide](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/) to get a proper macOS installer
 4. Mount the EFI partition of your USB and copy the EFI folder you got from this repo (if single booting, only copy the folders `BOOT` and `OC`)
 5. Update and modify the BIOS on your Dell 7567 laptop by following the instructions [listed below](#bios-settings)
-6. Boot OpenCore from the USB you prepared and select _Install macOS Sequoia_ from the picker
+6. Boot OpenCore from the USB you prepared and select _Install macOS Tahoe_ from the picker
 7. If everything went OK, you should arrive at the installer screen. Choose _Disk Utility_, click the _View_ icon on the top left and choose _Show All Devices_, then click on _Erase_ and format the drive itself using `APFS` and `GUID Partition Map`
 8. Close _Disk Utility_ and start the _macOS Installer_. Follow the steps on screen to install macOS. The computer will reboot about 3 times and without any intervention you should get the _First Time Setup_ screen once the installer finishes
 9. Use [MountEFI](https://github.com/corpnewt/MountEFI) to mount both your USB and SSD EFI partitions. Copy the EFI folder from your bootable USB to your SSD
@@ -36,7 +29,7 @@ Keep in mind that this is meant to be used as a starting point to get you quickl
 
 I'll share some information I gathered along the way while building my EFI for this 2017 laptop as well as some recommendations to get everything working as stable as possible.
 
-Right now I'm triple booting _Windows 11_, _macOS Sequoia_ and _CachyOS_ on a **single NVMe drive** and everything works perfectly fine. If you only want to install macOS, just keep reading. If you want to double or triple boot, first take a look at the [Triple boot setup guide](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/blob/main/triple-boot.md), since it is important to first partition your drive the right way to avoid issues down the road.
+Right now I'm triple booting _Windows 11_, _macOS Tahoe_ and _CachyOS_ on a **single NVMe drive** and everything works perfectly fine. If you only want to install macOS, just keep reading. If you want to double or triple boot, first take a look at the [Triple boot setup guide](https://github.com/leandroprz/Dell-7567-Laptop-Hackintosh-OpenCore/blob/main/triple-boot.md), since it is important to first partition your drive the right way to avoid issues down the road.
 
 Based on this laptop's hardware I decided it was best to use `MacBookPro14,3` for the SMBIOS, since the laptop:
 
@@ -46,7 +39,7 @@ Based on this laptop's hardware I decided it was best to use `MacBookPro14,3` fo
 
 The SMBIOS [can have a real impact](https://dortania.github.io/OpenCore-Install-Guide/extras/smbios-support.html) on your hackintosh performance, so it is recommended to choose what's closer to your hardware to avoid issues.
 
-But there's just a small problem, `MacBookPro14,3` is [only supported up to macOS Ventura 13.6.x](https://support.apple.com/en-us/108052), so we're going to bypass that with a [patch](https://github.com/dortania/OpenCore-Legacy-Patcher/blob/main/payloads/Config/config.plist#L220-L243) and a [kext](https://github.com/acidanthera/RestrictEvents) so we can install macOS Sequoia 15.7.x. Kaby Lake is still fully supported by Apple on newer devices.
+But there's just a small problem, `MacBookPro14,3` is [only supported up to macOS Ventura 13.6.x](https://support.apple.com/en-us/108052), so we're going to bypass that with a [patch](https://github.com/dortania/OpenCore-Legacy-Patcher/blob/main/payloads/Config/config.plist#L220-L243) and a [kext](https://github.com/acidanthera/RestrictEvents) so we can install macOS Tahoe. Kaby Lake is still fully supported by Apple on newer devices.
 
 # Table of contents
 
@@ -120,10 +113,10 @@ But there's just a small problem, `MacBookPro14,3` is [only supported up to macO
 Here are some _Geekbench 7_ benchmarks:
 | Benchmark | Test  | Score |
 | --------- | ----------- | ----: |
-| CPU   | [Single-core](https://browser.geekbench.com/v7/cpu/70376) |  1096 |
-| CPU   | [Multi-core](https://browser.geekbench.com/v7/cpu/70376)  |  4069 |
-| GPU   | [OpenCL](https://browser.geekbench.com/v7/gpu/37177)      |  3762 |
-| GPU   | [Metal](https://browser.geekbench.com/v7/gpu/37164)       |  3643 |
+| CPU   | [Single-core](https://browser.geekbench.com/v7/cpu/612435) |  1191 |
+| CPU   | [Multi-core](https://browser.geekbench.com/v7/cpu/612435)  |  4219 |
+| GPU   | [OpenCL](https://browser.geekbench.com/v7/gpu/279969)      |  3785 |
+| GPU   | [Metal](https://browser.geekbench.com/v7/gpu/279991)       |  4815 |
 
 # Getting started
 
@@ -138,7 +131,7 @@ You MUST add your own _System Serial Number_, _System UUID_, _MLB_ and _ROM_ in 
 
 ## NVRAM values in `config.plist`
 
-- `boot-args`: Keep `-v keepsyms=1 debug=0x100` for verbose mode in case you need to troubleshoot boot issues. Once your hackintosh works fine after setting everything up, you can remove all the arguments to just see the Apple logo instead of a cascade of white text
+- `boot-args`: Keep `-v keepsyms=1 debug=0x100` for verbose mode in case you need to troubleshoot boot issues. Once your hackintosh works fine after setting everything up, you can remove all the arguments (except `keepsyms=1`) to just see the Apple logo instead of a cascade of white text
 - `prev-lang:kbd`: I'm using `es_419-ES:89` because I have a Latin American keyboard, but you should definitely change this value to match your keyboard (e.g.: `en-US:0`). Check the available values in [this page](https://github.com/acidanthera/OpenCorePkg/blob/master/Utilities/AppleKeyboardLayouts/AppleKeyboardLayouts.txt)
 
 ## BIOS settings
@@ -175,7 +168,7 @@ Follow the [Creating the USB OpenCore Install Guide](https://dortania.github.io/
     - Scheme: `GUID Partition Map`
 4. Open the Terminal and run the following command:
 ```
-sudo /Applications/Install\ macOS\ Sequoia.app/Contents/Resources/createinstallmedia --volume /Volumes/USB
+sudo /Applications/Install\ macOS\ Tahoe.app/Contents/Resources/createinstallmedia --volume /Volumes/USB
 ```
 5. Mount the USB's EFI partition using [MountEFI](https://github.com/corpnewt/MountEFI) and copy the modified OpenCore EFI folder into it. Your bootable macOS installer is now ready.
 
@@ -218,8 +211,8 @@ If you don't see all the options, press the `space bar` on your keyboard to make
 
 Here's a quick rundown of what they do:
 
-- _Install macOS Sequoia_: Boots into your macOS installer
-- _Recovery 15.7.x (dmg)_: Boots into the recovery partition, useful for repairs
+- _Install macOS Tahoe_: Boots into your macOS installer
+- _Recovery 26.7.x (dmg)_: Boots into the recovery partition, useful for repairs
 - _OpenShell.efi_: This is mainly for troubleshooting. Refer to [Troubleshooting](#troubleshooting) below for more information
 - _Reset NVRAM_: Clears stored NVRAM variables. Useful if you notice that changes on your `config.plist` aren't applying correctly. If you clear the NVRAM you might need to manually re-add the boot entry in the BIOS menu
 
@@ -227,7 +220,7 @@ Here's a quick rundown of what they do:
 
 At the OpenCore boot picker:
 
-1. Select _Install macOS Sequoia_
+1. Select _Install macOS Tahoe_
 2. Once at the installer screen, open _Disk Utility_. On the top left click on _View_ and then on _Show All Devices_
 3. Select your internal SSD drive and click on _Erase_. Format it:
     - Name: _macOS_
@@ -332,6 +325,13 @@ When updating `VoodooPS2Controller` or OpenCore it is always recommended to to a
 
 No.
 
+## Will this EFI work with macOS Sequoia
+
+It should work just fine. You could even tweak it to make it more secure by modifying the following in the `config.plist`:
+
+- `NVRAM > Add > 7C436110-AB2A-4BBB-A880-FE41995C9F82 > csr-active-config: 00000000`
+- `Misc > Security > SecureBootModel: Default`
+
 # Troubleshooting
 
 ## OpenCore UEFI Shell
@@ -413,7 +413,6 @@ For other issues I recommend you to check the following:
 - [MOS](https://mos.caldis.me/) - Improve mouse scrolling
 - [Raycast](https://www.raycast.com/) - Because Spotlight sucks
 - [Stats](https://github.com/exelban/stats) - macOS system monitor in your menu bar. Useful to check if CPU power management is working properly
-- [Tanoe](https://github.com/DrDonk/Tanoe) - Block macOS Tahoe updates
 
 ## Apps for troubleshooting your hackintosh
 
@@ -429,6 +428,7 @@ For other issues I recommend you to check the following:
   - [Enabling Touchpad Support on Laptops](https://github.com/5T33Z0/OC-Little-Translated/tree/main/Content/05_Laptop-specific_Patches/Trackpad_Patches)
   - [Using unsupported Board-IDs with macOS 11.3 to 26](https://github.com/5T33Z0/OC-Little-Translated/tree/main/Content/09_Board-ID_VMM-Spoof)
 - [OCLP-4-Hackintosh](https://github.com/5T33Z0/OCLP4Hackintosh)
+    - [Re-enabling Audio in macOS Tahoe beta 2+](https://github.com/5T33Z0/OCLP4Hackintosh/blob/main/Enable_Features/Audio_Tahoe.md)
 - [OpenCore Visual Beginners Guide](https://chriswayg.gitbook.io/opencore-visual-beginners-guide)
 - [On fixing the trackpad (solution included)](https://github.com/Lukitronix/How-to-make-a-Hackintosh/issues/1)
 - [Enable I2C Trackpad (VoodooI2C) - Not a Guide... not really](https://olarila.com/topic/5644-enable-i2c-trackpad-voodooi2c-not-a-guide-not-really/)
