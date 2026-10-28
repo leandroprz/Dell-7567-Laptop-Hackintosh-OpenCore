@@ -2,7 +2,7 @@
 
 [![MacBook Pro Tahoe desktop](assets/macbook-pro-tahoe-desktop.webp "MacBook Pro Tahoe desktop")](assets/macbook-pro-tahoe-desktop.webp)
 
-[![macOS](https://img.shields.io/badge/macOS-Tahoe%2026.7.1-d3a94e?style=for-the-badge)](#) [![OpenCore](https://img.shields.io/badge/OpenCore-1.0.8-41a1bf?style=for-the-badge)](#) [![Dell BIOS](https://img.shields.io/badge/Dell%20BIOS-1.15.0-b75252?style=for-the-badge)](#)
+[![macOS](https://img.shields.io/badge/macOS-Tahoe%2026.7.2-d3a94e?style=for-the-badge)](#) [![OpenCore](https://img.shields.io/badge/OpenCore-1.0.8-41a1bf?style=for-the-badge)](#) [![Dell BIOS](https://img.shields.io/badge/Dell%20BIOS-1.15.0-b75252?style=for-the-badge)](#)
 
 This is my manually built EFI following [Dortania's OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/) that uses the [OpenCore bootloader](https://github.com/acidanthera/OpenCorePkg).
 
