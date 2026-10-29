@@ -410,9 +410,10 @@ For other issues I recommend you to check the following:
 
 ## Apps to improve usability
 
-- [MOS](https://mos.caldis.me/) - Improve mouse scrolling
 - [Raycast](https://www.raycast.com/) - Because Spotlight sucks
 - [Stats](https://github.com/exelban/stats) - macOS system monitor in your menu bar. Useful to check if CPU power management is working properly
+- [MOS](https://mos.caldis.me/) - Improve mouse scrolling
+- [one-key-hidpi](https://github.com/xzhih/one-key-hidpi) - Enable macOS native HiDPI settings
 
 ## Apps for troubleshooting your hackintosh
 
